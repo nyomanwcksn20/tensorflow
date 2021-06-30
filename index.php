@@ -1,12 +1,7 @@
-<div>Pemanasan Kepala</div>
+<div>Angkat barbel</div>
 <button type="button" onclick="init()">Start</button>
 <div><canvas id="canvas"></canvas></div>
 <div id="label-container"></div>
-<br><br><br><br>
-<audio id="SoundCount">
-  <source src="SoundCountIND.mp3" type="audio/mpeg">
-  Your browser does not support HTML5 audio.
-</audio>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
 <script type="text/javascript">
@@ -14,19 +9,9 @@
     // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
 
     // the link to your model provided by Teachable Machine export panel
-    const URL = "./my_model_pemanasan/";
+    const URL = "./my_model/";
+    // const URL = "https://teachablemachine.withgoogle.com/models/ep0mDqjw1/";
     let model, webcam, ctx, labelContainer, maxPredictions;
-
-
-    var aud = document.getElementById("SoundCount"); 
-
-    function playAud() { 
-      aud.play(); 
-    } 
-
-    function pauseAud() { 
-      aud.pause(); 
-    } 
 
     async function init() {
         const modelURL = URL + "model.json";
@@ -39,7 +24,7 @@
         maxPredictions = model.getTotalClasses();
 
         // Convenience function to setup a webcam
-        const size = 400;
+        const size = 600;
         const flip = true; // whether to flip the webcam
         webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
         await webcam.setup(); // request access to the webcam
@@ -73,13 +58,6 @@
             const classPrediction =
                 prediction[i].className + ": " + prediction[i].probability.toFixed(2);
             labelContainer.childNodes[i].innerHTML = classPrediction;
-        
-
-        // don't play audio when head's neutral with probability >= 75%
-            if (prediction[0].probability.toFixed(2) >= 0.75)
-                pauseAud();
-            else
-                playAud();
         }
 
         // finally draw the poses
