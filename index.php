@@ -1,7 +1,14 @@
-<div>Angkat barbel</div>
-<button type="button" onclick="init()">Start</button>
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<div class="text">Angkat Barbel</div>
+<button  class="text" type="button" onclick="init()">Start</button>
 <div><canvas id="canvas"></canvas></div>
-<div id="label-container"></div>
+<div class="text" id="label-container"></div>
+
+<div id="count" class="text"> 0 kali </div>
+
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
 <script type="text/javascript">
@@ -9,9 +16,22 @@
     // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
 
     // the link to your model provided by Teachable Machine export panel
-    const URL = "./my_model/";
-    // const URL = "https://teachablemachine.withgoogle.com/models/ep0mDqjw1/";
+    //const URL = "./my_model_angkatbarbelfix/";
+    const URL = "https://teachablemachine.withgoogle.com/models/Lp3h49ohm/";
     let model, webcam, ctx, labelContainer, maxPredictions;
+
+    var hitung = document.getElementById("count");
+    count = 0;
+
+    function hitungan() {
+    count += 1; 
+    hitung.innerHTML = (count/100).toFixed(0) + " kali";
+    };
+
+    function hitunganan() {
+    count += 0;
+    hitung.innerHTML = (count/100).toFixed(0) + " kali";
+    };
 
     async function init() {
         const modelURL = URL + "model.json";
@@ -24,7 +44,7 @@
         maxPredictions = model.getTotalClasses();
 
         // Convenience function to setup a webcam
-        const size = 600;
+        const size = 400;
         const flip = true; // whether to flip the webcam
         webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
         await webcam.setup(); // request access to the webcam
@@ -58,6 +78,43 @@
             const classPrediction =
                 prediction[i].className + ": " + prediction[i].probability.toFixed(2);
             labelContainer.childNodes[i].innerHTML = classPrediction;
+
+        // LOGIKA
+
+
+        // Var a = prediction[1].probability.toFixed(2)
+        // Var b = prediction[2].probability.toFixed(2)
+
+        // for (prediction[1].probability.toFixed(2) = 0; prediction[1].probability.toFixed(2) <= 10; prediction[1].probability.toFixed(2)++) {
+        // if (prediction[1].probability.toFixed(2) == 10) {
+        //  break;
+        // }
+        //  hitungan();
+        // }
+
+        // for (let prediction[1].probability.toFixed(2) = 0; prediction[1].probability.toFixed(2) == 1; prediction[1].probability.toFixed(2)++){ 
+        //  hitungan()
+        // }
+        // hitunganan()
+
+        // if (prediction[2].probability.toFixed(2) == 1.00 ){
+        //  hitungan()
+        //     } else {
+        //  hitunganan()
+        //     }
+
+        if (prediction[1].probability.toFixed(2) <= 0.90)
+        hitungan();
+        else if (prediction[2].probability.toFixed(2) <= 0.90)
+        hitungan();
+        // BAHAYA!!!!
+        // while(prediction[1].probability.toFixed(2) == 1.00) {
+        // if (prediction[2].probability.toFixed(2) == 1.00) {
+        // break;
+        // }
+        // hitungan();
+        // }
+
         }
 
         // finally draw the poses
